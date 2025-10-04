@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xtreme Academia</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: #181818;
+            color: #fff;
+        }
+        .topbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: #111;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 0 40px;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+        .topbar.scrolled {
+            background: #181818;
+            box-shadow: 0 4px 16px #2ecc4010;
+        }
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        .logo .x {
+            color: #2ecc40;
+        }
+        .logo .treme {
+            color: #fff;
+        }
+        nav {
+            display: flex;
+            gap: 28px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.08rem;
+            transition: color 0.2s;
+            padding: 8px 0;
+            border-bottom: 2px solid transparent;
+        }
+        nav a:hover, nav a.active {
+            color: #2ecc40;
+            border-bottom: 2px solid #2ecc40;
+        }
+        .hero {
+            background: 
+                linear-gradient(120deg, rgba(46,204,64,0.25) 0%, rgba(24,24,24,0.85) 100%),
+                url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+            min-height: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 90px;
+            padding-bottom: 60px;
+            position: relative;
+        }
+        .hero-content {
+            max-width: 600px;
+            text-align: left;
+        }
+        .hero h1 {
+            font-size: 2.7rem;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+        .hero h1 .x { color: #2ecc40; }
+        .hero h1 .treme { color: #fff; }
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 32px;
+            color: #e0e0e0;
+        }
+        .btn {
+            background: #2ecc40;
+            color: #fff;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            box-shadow: 0 2px 8px rgba(46,204,64,0.15);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 #2ecc4060; }
+            70% { box-shadow: 0 0 0 12px #2ecc4000; }
+            100% { box-shadow: 0 0 0 0 #2ecc4000; }
+        }
+        .btn:hover {
+            background: #27ae38;
+        }
+        section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        .section-title {
+            font-size: 2rem;
+            color: #2ecc40;
+            margin-bottom: 30px;
+            text-align: left;
+            font-weight: 700;
+        }
+        .about {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+            background: #222;
+            border-radius: 18px;
+            padding: 40px 30px;
+        }
+        .about-text {
+            flex: 1 1 350px;
+            font-size: 1.15rem;
+        }
+        .about-img {
+            flex: 1 1 350px;
+            max-width: 350px;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .about-img img {
+            width: 100%;
+            display: block;
+        }
+        .plans {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .plan-card {
+            background: #fff;
+            color: #181818;
+            border-radius: 18px;
+            padding: 30px 25px;
+            width: 280px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+            text-align: center;
+            border: 2px solid #2ecc40;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .plan-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 8px 24px #2ecc4030;
+        }
+        .plan-card h3 {
+            color: #2ecc40;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .plan-card .price {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 15px 0;
+        }
+        .plan-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0 0 0;
+            text-align: left;
+        }
+        .plan-card ul li {
+            margin-bottom: 10px;
+        }
+        .modalities {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .modality-card {
+            background: #222;
+            border-radius: 18px;
+            padding: 25px 20px;
+            width: 220px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .modality-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 8px 24px #2ecc4030;
+        }
+        .modality-card h4 {
+            color: #2ecc40;
+            margin-bottom: 10px;
+        }
+        .benefits {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+            background: #222;
+            border-radius: 18px;
+            padding: 40px 30px;
+        }
+        .benefits-list {
+            flex: 1 1 350px;
+        }
+        .benefits-list ul {
+            list-style: none;
+            padding: 0;
+        }
+        .benefits-list ul li {
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            position: relative;
+            padding-left: 25px;
+        }
+        .benefits-list ul li::before {
+            content: '✔';
+            color: #2ecc40;
+            position: absolute;
+            left: 0;
+        }
+        .contact-form {
+            background: #222;
+            border-radius: 18px;
+            padding: 30px 25px;
+            max-width: 500px;
+            margin: 0 auto;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .contact-form:hover {
+            box-shadow: 0 8px 24px #2ecc4015;
+        }
+        .contact-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 18px;
+            border-radius: 8px;
+            border: none;
+            background: #181818;
+            color: #fff;
+            font-size: 1rem;
+        }
+        .contact-form button {
+            width: 100%;
+        }
+        .contact-info {
+            text-align:center; 
+            margin-top:30px;
+            color: #e0e0e0;
+        }
+        footer {
+            background: #111;
+            text-align: center;
+            padding: 25px 0;
+            color: #aaa;
+            font-size: 1rem;
+            margin-top: 60px;
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s, transform 0.8s;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .info-bar {
+            background: #222;
+            color: #fff;
+            text-align: center;
+            padding: 16px 10px 10px 10px;
+            font-size: 1.08rem;
+            margin-top: 70px;
+        }
+        .info-bar strong {
+            color: #2ecc40;
+        }
+        .info-bar .icon {
+            margin-right: 6px;
+        }
+        .info-bar a {
+            color: #2ecc40;
+            text-decoration: underline;
+            margin-left: 8px;
+        }
+        .instagram-section {
+            background: #222;
+            border-radius: 18px;
+            padding: 40px 30px;
+            margin-top: 40px;
+        }
+        .instagram-section h2 {
+            color: #2ecc40;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-align: left;
+            font-weight: 700;
+        }
+        .instagram-section .subtitle {
+            color: #e0e0e0;
+            font-size: 1.08rem;
+            margin-bottom: 28px;
+        }
+        .instagram-embed {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: flex-start;
+        }
+        .instagram-embed iframe {
+            border-radius: 12px;
+            border: none;
+            width: 320px;
+            height: 400px;
+            background: #fff;
+        }
+        @media (max-width: 900px) {
+            .topbar { padding: 0 10px; }
+            .about, .benefits { flex-direction: column; gap: 20px; padding: 25px 10px;}
+            .plans, .modalities { flex-direction: column; gap: 20px;}
+            .instagram-embed { flex-direction: column; gap: 20px;}
+        }
+        @media (max-width: 600px) {
+            .topbar { flex-direction: column; height: auto; padding: 10px 0;}
+            nav { flex-direction: column; gap: 10px;}
+            .logo { font-size: 1.5rem;}
+        }
+        html { scroll-padding-top: 80px; }
+    </style>
+</head>
+<body>
+    <div class="topbar" id="topbar">
+        <div class="logo">
+            <span class="x">X</span><span class="treme">treme</span>
+        </div>
+        <nav>
+            <a href="#sobre">Sobre</a>
+            <a href="#planos">Planos</a>
+            <a href="#modalidades">Modalidades</a>
+            <a href="#beneficios">Benefícios</a>
+            <a href="#contato">Contato</a>
+            <a href="#instagram">Instagram</a>
+        </nav>
+    </div>
+    <section class="hero fade-in">
+        <div class="hero-content">
+            <h1>Transforme seu corpo na <span class="x">X</span><span class="treme">treme</span></h1>
+            <p>Academia completa, ambiente motivador e profissionais qualificados para você alcançar seus objetivos.</p>
+            <a href="#planos" class="btn">Veja nossos planos</a>
+        </div>
+    </section>
+    <section id="sobre" class="fade-in">
+        <h2 class="section-title">Sobre a Xtreme</h2>
+        <div class="about">
+            <div class="about-text">
+                <p>
+                    Bem-vindo à <strong>Xtreme Fitness</strong>, a academia referência em Itu! Aqui você encontra musculação, aulas de luta e dança, ambiente moderno e profissionais qualificados para transformar seu corpo e sua saúde.
+                </p>
+                <p>
+                    Venha fazer parte do nosso time e descubra uma nova experiência fitness, com planos flexíveis e modalidades para todos os estilos. Aceitamos GymPass e TotalPass!
+                </p>
+                <div class="about-details">
+                    <div class="about-info">
+                        <h3>Informações</h3>
+                        <ul>
+                            <li><span class="icon">⏰</span> <strong>Horário:</strong> Das 6h às 00h</li>
+                            <li><span class="icon">🏋️‍♂️</span> <strong>Modalidades:</strong> Musculação, luta e dança</li>
+                            <li><span class="icon">💳</span> <strong>GymPass &amp; TotalPass:</strong> Aceitamos!</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="about-img">
+                <img src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=800&q=80" alt="Academia Xtreme">
+            </div>
+        </div>
+    </section>
+    <section id="planos" style="background:rgba(255, 255, 255, 0.03);;border-radius: 10px;" class="fade-in">
+        <h2 class="section-title" style="color:#2ecc40;">Planos e Preços</h2>
+        <div class="plans">
+            <div class="plan-card">
+                <h3>Plano Mensal</h3>
+                <div class="price">R$ 90,00</div>
+                <ul>
+                    <li>Acesso livre à academia</li>
+                    <li>Acompanhamento básico</li>
+                    <li>Musculação e aeróbico</li>
+                </ul>
+                <button class="btn saiba-mais" data-plano="mensal" type="button" style="margin-top:18px;">Saiba mais</button>
+            </div>
+            <div class="plan-card">
+                <h3>Plano Trimestral</h3>
+                <div class="price">R$ 269,90</div>
+                <ul>
+                    <li>Todos benefícios do mensal</li>
+                    <li>Desconto especial em produtos dentro da academia</li>
+                    
+                </ul>
+                <button class="btn saiba-mais" data-plano="trimestral" type="button" style="margin-top:18px;">Saiba mais</button>
+            </div>
+            <div class="plan-card">
+                <h3>Plano Anual</h3>
+                <div class="price">R$ 810,00</div>
+                <ul>
+                    <li>Todos benefícios do trimestral</li>
+                    <li>Aulas de luta</li>
+                </ul>
+                <button class="btn saiba-mais" data-plano="anual" type="button" style="margin-top:18px;">Saiba mais</button>
+            </div>
+        </div>
+    </section>
+    <section id="modalidades" class="fade-in">
+        <h2 class="section-title">Modalidades</h2>
+        <div class="modalities">
+            <div class="modality-card">
+                <h4>Musculação</h4>
+                <p>Equipamentos modernos e acompanhamento profissional.</p>
+            </div>
+            <div class="modality-card">
+                <h4>Cross Training</h4>
+                <p>Treinos dinâmicos para força e resistência.</p>
+            </div>
+            <div class="modality-card">
+                <h4>Pilates</h4>
+                <p>Flexibilidade, postura e bem-estar.</p>
+            </div>
+            <div class="modality-card">
+                <h4>Funcional</h4>
+                <p>Movimentos naturais para o dia a dia.</p>
+            </div>
+            <div class="modality-card">
+                <h4>HIIT</h4>
+                <p>Alta intensidade para resultados rápidos.</p>
+            </div>
+        </div>
+    </section>
+    <section id="beneficios" class="fade-in">
+        <h2 class="section-title">Benefícios</h2>
+        <div class="benefits">
+            <div class="benefits-list">
+                <ul>
+                    <li>Ambiente climatizado e seguro</li>
+                    <li>Profissionais qualificados</li>
+                    <li>Equipamentos de última geração</li>
+                    <li>Planos flexíveis</li>
+                    <li>Estacionamento gratuito</li>
+                    <li>Wi-Fi liberado</li>
+                    <li>Vestiários completos</li>
+                </ul>
+            </div>
+            <div class="about-img">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Benefícios Xtreme">
+            </div>
+        </div>
+    </section>
+    
+    <section id="instagram" class="instagram-section fade-in">
+        <h2>Instagram</h2>
+        <div class="subtitle">
+            Confira as últimas publicações e novidades da nossa academia!
+        </div>
+        <div class="instagram-embed">
+            <iframe src="https://www.instagram.com/p/DPGmzOcEgmt/embed" allowtransparency="true"></iframe>
+            <iframe src="https://www.instagram.com/p/DPEkVGSDH-f/embed" allowtransparency="true"></iframe>
+            <iframe src="https://www.instagram.com/p/DPCki_CkmGl/embed" allowtransparency="true"></iframe>
+        </div>
+        <div style="margin-top:20px;">
+            <a href="https://www.instagram.com/xtremeitu" target="_blank" class="btn" style="background:#2ecc40;color:#fff;">Ver mais no Instagram</a>
+        </div>
+    </section>
+    <footer style="background:#111; color:#fff; margin-top:60px; padding-top:40px; border-top:2px solid #222;">
+        <div style="max-width:1200px; margin:0 auto; padding:0 20px;">
+            <hr style="border:0; border-top:1px solid #222; margin-bottom:30px;">
+            <div style="text-align:center; margin-bottom:25px; margin-top:10px;">
+                <span style="font-size:1.25rem; font-weight:700;">Siga a Xtreme Fitness</span><br>
+                <a href="https://www.facebook.com/" target="_blank" style="margin:0 8px; color:#fff;"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" style="margin-top: 10px;width:28px;vertical-align:middle;filter:invert(1);"></a>
+                <a href="https://www.instagram.com/xtremeitu" target="_blank" style="margin:0 8px; color:#fff;"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" style="margin-top: 10px; width:28px;vertical-align:middle;filter:invert(1);"></a>
+                <a href="#" target="_blank" style="margin:0 8px; color:#fff;"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube" style="margin-top: 10px; width:28px;vertical-align:middle;filter:invert(1);"></a>
+                <a href="#" target="_blank" style="margin:0 8px; color:#fff;"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" style="width:28px;margin-top: 10px;vertical-align:middle;filter:invert(1);"></a>
+            </div>
+            <hr style="border:0; border-top:1px solid #222; margin-bottom:30px;">
+            <div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:40px; margin-bottom:30px;">
+                <div style="flex:1 1 220px;">
+                    <h4 style="color:#2ecc40; margin-bottom:16px;">Institucional</h4>
+                    <ul style="list-style:none; padding:0; margin:0;">
+                        <li><a href="#sobre" style="color:#fff; text-decoration:none;">Sobre</a></li>
+                        <li><a href="#modalidades" style="color:#fff; text-decoration:none;">Modalidades</a></li>
+                        <li><a href="#" style="color:#fff; text-decoration:none;">Política de Privacidade</a></li>
+                    </ul>
+                </div>
+                <div style="flex:1 1 220px;">
+                    <h4 style="color:#2ecc40; margin-bottom:16px;">Planos</h4>
+                    <ul style="list-style:none; padding:0; margin:0;">
+                        <li><a href="#planos" style="color:#fff; text-decoration:none;">Planos</a></li>
+                        <li><a href="#" style="color:#fff; text-decoration:none;">Contratos</a></li>
+                        <li><a href="#" style="color:#fff; text-decoration:none;">GymPass &amp; TotalPass</a></li>
+                    </ul>
+                </div>
+                <div style="flex:1 1 220px;">
+                    <h4 style="color:#2ecc40; margin-bottom:16px;">Corporativo</h4>
+                    <ul style="list-style:none; padding:0; margin:0;">
+                        <li><a href="#" style="color:#fff; text-decoration:none;">Trabalhe Conosco</a></li>
+                        <li><a href="#" style="color:#fff; text-decoration:none;">Indique um ponto</a></li>
+                        <li><a href="#" style="color:#fff; text-decoration:none;">Imprensa</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr style="border:0; border-top:1px solid #222; margin-bottom:20px;">
+            <div style="text-align:center; font-size:0.98rem; color:#aaa; margin-bottom:10px;">
+                *Consulte condições promocionais e regulamentos na recepção ou pelo WhatsApp.<br>
+                Rua Paula Souza, 162 - Centro, Itu/SP, CEP 13300-050<br>
+                xtremeitu@gmail.com
+            </div>
+            <div style="text-align:center; font-size:0.95rem; color:#aaa;">
+                XTREME FITNESS S.A
+            </div>
+        </div>
+    </footer>
+    <!-- Modal Saiba Mais -->
+    <div id="modal-saiba-mais" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(24,24,24,0.85); z-index:9999; align-items:center; justify-content:center;">
+        <div style="background:#fff; color:#181818; border-radius:18px; max-width:350px; width:90%; padding:32px 24px; box-shadow:0 8px 32px #2ecc4030; position:relative;">
+            <button id="close-modal-saiba-mais" style="position:absolute; top:12px; right:16px; background:none; border:none; font-size:1.5rem; color:#2ecc40; cursor:pointer;">&times;</button>
+            <h3 id="modal-titulo" style="color:#2ecc40; margin-bottom:12px;"></h3>
+            <div id="modal-conteudo" style="font-size:1.08rem;"></div>
+        </div>
+    </div>
+    <script>
+        // Animação de fade-in ao rolar
+        function revealOnScroll() {
+            document.querySelectorAll('.fade-in').forEach(function(el) {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 60) {
+                    el.classList.add('visible');
+                }
+            });
+        }
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('DOMContentLoaded', revealOnScroll);
+
+        // Menu ativo ao rolar
+        const sections = ['sobre','planos','modalidades','beneficios','contato','instagram'];
+        function setActiveMenu() {
+            let scrollPos = window.scrollY + 90;
+            let found = false;
+            sections.forEach(id => {
+                const sec = document.getElementById(id);
+                if (sec && sec.offsetTop <= scrollPos && sec.offsetTop + sec.offsetHeight > scrollPos) {
+                    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+                    let link = document.querySelector('nav a[href="#'+id+'"]');
+                    if (link) link.classList.add('active');
+                    found = true;
+                }
+            });
+            // Topbar efeito
+            const topbar = document.getElementById('topbar');
+            if (window.scrollY > 40) topbar.classList.add('scrolled');
+            else topbar.classList.remove('scrolled');
+        }
+        window.addEventListener('scroll', setActiveMenu);
+        window.addEventListener('DOMContentLoaded', setActiveMenu);
+
+        // Suaviza o scroll ao clicar no menu
+        document.querySelectorAll('nav a').forEach(a => {
+            a.addEventListener('click', function(e) {
+                const href = a.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 70,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Modal Saiba Mais
+        const detalhesPlano = {
+            mensal: {
+                titulo: "Plano Mensal",
+                conteudo: `
+                    <ul style="padding-left:18px;">
+                        <li>Valor: R$ 90,00/mês</li>
+                        <li>Acesso livre à academia</li>
+                        <li>Acompanhamento básico</li>
+                        <li>Musculação e aeróbico</li>
+                        <li>Sem fidelidade</li>
+                    </ul>
+                    <div style="margin-top:10px;">Ideal para quem quer flexibilidade e começar sem compromisso.</div>
+                `
+            },
+            trimestral: {
+                titulo: "Plano Trimestral",
+                conteudo: `
+                    <ul style="padding-left:18px;">
+                        <li>Valor: R$ 270,00 (3 meses)</li>
+                        <li>Todos benefícios do mensal</li>
+                        <li>Desconto especial</li>
+                        <li>1 avaliação física gratuita</li>
+                        <li>Sem taxa de matrícula</li>
+                    </ul>
+                    <div style="margin-top:10px;">Economize e tenha acompanhamento extra!</div>
+                `
+            },
+            anual: {
+                titulo: "Plano Anual",
+                conteudo: `
+                    <ul style="padding-left:18px;">
+                        <li>Valor: R$ 810,00 (12 meses)</li>
+                        <li>Todos benefícios do trimestral</li>
+                        <li>Personal Trainer 1x/semana</li>
+                        <li>Brinde exclusivo</li>
+                        <li>Parcelamento facilitado</li>
+                    </ul>
+                    <div style="margin-top:10px;">Para quem busca resultados e vantagens exclusivas!</div>
+                `
+            }
+        };
+
+        document.querySelectorAll('.saiba-mais').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const plano = btn.getAttribute('data-plano');
+                document.getElementById('modal-titulo').innerHTML = detalhesPlano[plano].titulo;
+                document.getElementById('modal-conteudo').innerHTML = detalhesPlano[plano].conteudo;
+                document.getElementById('modal-saiba-mais').style.display = 'flex';
+            });
+        });
+        document.getElementById('close-modal-saiba-mais').onclick = function() {
+            document.getElementById('modal-saiba-mais').style.display = 'none';
+        };
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('modal-saiba-mais');
+            if (e.target === modal) modal.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
